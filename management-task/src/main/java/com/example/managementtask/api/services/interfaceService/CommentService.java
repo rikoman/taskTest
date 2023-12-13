@@ -1,0 +1,16 @@
+package com.example.managementtask.api.services.interfaseService;
+
+import com.example.managementtask.store.dtos.CommentDTO;
+import com.example.managementtask.store.entities.Comment;
+import org.springframework.security.core.Authentication;
+
+import java.util.List;
+
+public interface CommentService {
+
+    Comment createComment(CommentDTO comment, Authentication authentication);
+    List<Comment> readAllComment();
+    Comment readCommentById(Long id);
+    Comment updatePartInfoComment(Long id,CommentDTO comment,Authentication authentication);
+    void deleteComment(Long id);
+}
