@@ -49,6 +49,11 @@ public class TaskController {
         return response.listEntity(taskService.readTaskByExecutor(authentication));
     }
 
+    @GetMapping("/executor/{name}")
+    public ResponseEntity<List<Task>> readAllTaskByExecutorName(@PathVariable String name){
+        return response.listEntity(taskService.readTaskByExecutorName(name));
+    }
+
     @PatchMapping("/{id}")
     public ResponseEntity<Task> updatePartInfoTask(@PathVariable Long id,@RequestBody TaskDTO dto,Authentication authentication){
         return response.entity(taskService.updatePartInfoTask(id,dto,authentication));

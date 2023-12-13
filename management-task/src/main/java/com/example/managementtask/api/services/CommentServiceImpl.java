@@ -1,14 +1,17 @@
 package com.example.managementtask.api.services;
 
-import com.example.managementtask.api.services.interfaseService.CommentService;
+import com.example.managementtask.api.services.interfaceService.CommentService;
 import com.example.managementtask.security.service.UserDetailsImpl;
 import com.example.managementtask.store.dtos.CommentDTO;
 import com.example.managementtask.store.entities.Comment;
+import com.example.managementtask.store.entities.Task;
 import com.example.managementtask.store.repositories.CommentRepository;
+import com.example.managementtask.store.repositories.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -16,15 +19,29 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final UserService userService;
+    private final TaskServiceImpl taskService;
+    private final TaskRepository taskRepository;
 
     @Override
-    public Comment createComment(CommentDTO comment, Authentication authentication) {
+    public Comment createComment(CommentDTO dto, Authentication authentication) {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+
+        Task task = taskService.readTaskById(dto.getTaskId());
+
         Comment newComment = Comment.builder()
-                .content(comment.getContent())
+                .content(dto.getContent())
                 .author(userService.readUserById(userPrincipal.getId()))
+                .task(task)
+                .dateCreate(LocalDateTime.now())
                 .build();
-        return commentRepository.save(newComment);
+
+        Comment savedComment = commentRepository.save(newComment);
+
+        task.getComments().add(savedComment);
+
+        taskRepository.save(task);
+
+        return savedComment;
     }
 
     @Override
@@ -33,18 +50,19 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment readCommentById(Long id) {
-        return null;
-    }
-
-    @Override
-    public Comment updatePartInfoComment(Long id, CommentDTO comment, Authentication authentication) {
-        return null;
+    public Comment updatePartInfoComment(Long id, CommentDTO dto, Authentication authentication) {
+        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+        Comment existComment = commentRepository.findById(id).orElseThrow();
+        if(existComment.getAuthor().getId().equals(userPrincipal.getId())){
+            existComment.setContent(dto.getContent());
+        }
+        return commentRepository.save(existComment);
     }
 
 
     @Override
     public void deleteComment(Long id) {
-
+        Comment existComment = commentRepository.findById(id).orElseThrow();
+        commentRepository.deleteById(existComment.getId());
     }
 }

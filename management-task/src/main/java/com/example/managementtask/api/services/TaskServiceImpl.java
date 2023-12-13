@@ -1,6 +1,6 @@
 package com.example.managementtask.api.services;
 
-import com.example.managementtask.api.services.interfaseService.TaskService;
+import com.example.managementtask.api.services.interfaceService.TaskService;
 import com.example.managementtask.security.service.UserDetailsImpl;
 import com.example.managementtask.security.user.User;
 import com.example.managementtask.store.dtos.TaskDTO;
@@ -63,6 +63,11 @@ public class TaskServiceImpl implements TaskService {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
         return taskRepository.findByExecutorId(userPrincipal.getId());
+    }
+
+    @Override
+    public List<Task> readTaskByExecutorName(String name) {
+        return taskRepository.findByExecutorUsername(name);
     }
 
     @Override

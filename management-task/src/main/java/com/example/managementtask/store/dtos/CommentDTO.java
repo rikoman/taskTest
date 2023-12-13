@@ -9,5 +9,5 @@ import lombok.Data;
 public class CommentDTO {
     private String content;
     private Long author;
-
+    private Long taskId;
 }

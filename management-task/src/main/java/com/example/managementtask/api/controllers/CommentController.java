@@ -5,10 +5,7 @@ import com.example.managementtask.store.dtos.CommentDTO;
 import com.example.managementtask.store.entities.Comment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,7 +22,7 @@ public class CommentController {
     }
 
     @PostMapping
-    public Comment createComment(CommentDTO dto, Authentication authentication){
+    public Comment createComment(@RequestBody CommentDTO dto, Authentication authentication){
         return commentService.createComment(dto,authentication);
     }
 

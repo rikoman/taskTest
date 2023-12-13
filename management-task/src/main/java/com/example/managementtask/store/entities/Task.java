@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,7 +33,8 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "executor_id")
     private User executor;
-    @OneToMany
-    @JoinColumn(name = "comment_id")
-    private List<Comment> comments;
+    @OneToMany(mappedBy = "task",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 }
