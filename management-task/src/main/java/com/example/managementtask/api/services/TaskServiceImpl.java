@@ -5,6 +5,8 @@ import com.example.managementtask.security.service.UserDetailsImpl;
 import com.example.managementtask.security.user.User;
 import com.example.managementtask.store.dtos.TaskDTO;
 import com.example.managementtask.store.entities.Task;
+import com.example.managementtask.store.entities.enums.Priority;
+import com.example.managementtask.store.entities.enums.Status;
 import com.example.managementtask.store.repositories.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -68,6 +70,21 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> readTaskByExecutorName(String name) {
         return taskRepository.findByExecutorUsername(name);
+    }
+
+    @Override
+    public List<Task> readTaskByPriority(Priority priority) {
+        return taskRepository.findByPriority(priority);
+    }
+
+    @Override
+    public List<Task> readTaskByStatus(Status status) {
+        return taskRepository.findByStatus(status);
+    }
+
+    @Override
+    public List<Task> readTaskByTaskAndStatus(Priority priority, Status status) {
+        return taskRepository.findByPriorityAndStatus(priority,status);
     }
 
     @Override

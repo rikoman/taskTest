@@ -3,6 +3,8 @@ package com.example.managementtask.api.controllers;
 import com.example.managementtask.api.services.TaskServiceImpl;
 import com.example.managementtask.store.dtos.TaskDTO;
 import com.example.managementtask.store.entities.Task;
+import com.example.managementtask.store.entities.enums.Priority;
+import com.example.managementtask.store.entities.enums.Status;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +54,21 @@ public class TaskController {
     @GetMapping("/executor/{name}")
     public ResponseEntity<List<Task>> readAllTaskByExecutorName(@PathVariable String name){
         return response.listEntity(taskService.readTaskByExecutorName(name));
+    }
+
+    @GetMapping("/priority/{priority}")
+    public ResponseEntity<List<Task>> readAllTaskByPriority(@PathVariable Priority priority){
+        return response.listEntity(taskService.readTaskByPriority(priority));
+    }
+
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<Task>> readAllTaskByStatus(@PathVariable Status status){
+        return response.listEntity(taskService.readTaskByStatus(status));
+    }
+
+    @GetMapping("/priority_status/{priority}/{status}")
+    public ResponseEntity<List<Task>> readAllTaskByPriorityAndStatus(@PathVariable Priority priority, @PathVariable Status status){
+        return response.listEntity(taskService.readTaskByTaskAndStatus(priority,status));
     }
 
     @PatchMapping("/{id}")
