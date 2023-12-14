@@ -1,5 +1,6 @@
 package com.example.managementtask.api.services;
 
+import com.example.managementtask.api.exception.BadRequestException;
 import com.example.managementtask.api.exception.NotFoundException;
 import com.example.managementtask.api.services.interfaceService.CommentService;
 import com.example.managementtask.security.service.UserDetailsImpl;
@@ -54,6 +55,8 @@ public class CommentServiceImpl implements CommentService {
         Comment existComment = findCommentById(id);
         if(existComment.getAuthor().getId().equals(userPrincipal(authentication).getId())){
             existComment.setContent(dto.getContent());
+        }else {
+            throw new BadRequestException("Вы не можете менять чужие комментарии");
         }
         return commentRepository.save(existComment);
     }
