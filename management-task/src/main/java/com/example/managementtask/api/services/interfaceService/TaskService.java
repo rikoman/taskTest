@@ -4,31 +4,31 @@ import com.example.managementtask.store.dtos.TaskDTO;
 import com.example.managementtask.store.entities.Task;
 import com.example.managementtask.store.entities.enums.Priority;
 import com.example.managementtask.store.entities.enums.Status;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
-
-import java.util.List;
 
 public interface TaskService {
 
     Task createTask(TaskDTO task,Authentication authentication);
 
-    List<Task> readAllTask();
+    Page<Task> readAllTask(PageRequest pageRequest);
 
     Task readTaskById(Long id);
 
-    List<Task> readTaskByAuthor(Authentication authentication);
+    Page<Task> readTaskByAuthor(Authentication authentication, PageRequest pageRequest);
 
-    List<Task> readTaskByAuthorName(String name);
+    Page<Task> readTaskByAuthorName(String name, PageRequest pageRequest);
 
-    List<Task> readTaskByExecutor(Authentication authentication);
+    Page<Task> readTaskByExecutor(Authentication authentication, PageRequest pageRequest);
 
-    List<Task> readTaskByExecutorName(String name);
+    Page<Task> readTaskByExecutorName(String name, PageRequest pageRequest);
 
-    List<Task> readTaskByPriority(Priority priority);
+    Page<Task> readTaskByPriority(Priority priority, PageRequest pageRequest);
 
-    List<Task> readTaskByStatus(Status status);
+    Page<Task> readTaskByStatus(Status status, PageRequest pageRequest);
 
-    List<Task> readTaskByTaskAndStatus(Priority priority, Status status);
+    Page<Task> readTaskByTaskAndStatus(Priority priority, Status status, PageRequest pageRequest);
 
     Task updatePartInfoTask(Long id,TaskDTO task,Authentication authentication);
 

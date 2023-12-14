@@ -3,23 +3,24 @@ package com.example.managementtask.store.repositories;
 import com.example.managementtask.store.entities.Task;
 import com.example.managementtask.store.entities.enums.Priority;
 import com.example.managementtask.store.entities.enums.Status;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
+import org.springframework.data.jpa.repository.Query;
 
 public interface TaskRepository extends JpaRepository<Task,Long> {
 
-    List<Task> findByAuthorId(Long id);
+    Page<Task> findByAuthorId(Long id,PageRequest pageRequest);
 
-    List<Task> findByAuthorUsername(String username);
+    Page<Task> findByAuthorUsername(String username,PageRequest pageRequest);
 
-    List<Task> findByExecutorId(Long id);
+    Page<Task> findByExecutorId(Long id,PageRequest pageRequest);
 
-    List<Task> findByExecutorUsername(String username);
+    Page<Task> findByExecutorUsername(String username,PageRequest pageRequest);
 
-    List<Task> findByPriority(Priority priority);
+    Page<Task> findByPriority(Priority priority,PageRequest pageRequest);
 
-    List<Task> findByStatus(Status status);
+    Page<Task> findByStatus(Status status,PageRequest pageRequest);
 
-    List<Task> findByPriorityAndStatus(Priority priority, Status status);
+    Page<Task> findByPriorityAndStatus(Priority priority, Status status, PageRequest pageRequest);
 }

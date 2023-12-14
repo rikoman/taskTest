@@ -1,14 +1,16 @@
-package com.example.managementtask.security;
+package com.example.managementtask.api.controllers;
 
+import com.example.managementtask.store.repositories.RoleRepository;
+import com.example.managementtask.store.repositories.UserRepository;
 import com.example.managementtask.security.config.jwt.JwtUtils;
 import com.example.managementtask.security.pojo.JwtResponse;
 import com.example.managementtask.security.pojo.LoginRequest;
 import com.example.managementtask.security.pojo.MessageResponse;
 import com.example.managementtask.security.pojo.SignupRequest;
 import com.example.managementtask.security.service.UserDetailsImpl;
-import com.example.managementtask.security.user.ERole;
-import com.example.managementtask.security.user.Role;
-import com.example.managementtask.security.user.User;
+import com.example.managementtask.store.entities.user.ERole;
+import com.example.managementtask.store.entities.user.Role;
+import com.example.managementtask.store.entities.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -1,6 +1,5 @@
 package com.example.managementtask.store.dtos;
 
-import com.example.managementtask.security.user.User;
 import lombok.Builder;
 import lombok.Data;
 

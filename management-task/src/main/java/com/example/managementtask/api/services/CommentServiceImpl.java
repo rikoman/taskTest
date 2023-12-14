@@ -1,5 +1,6 @@
 package com.example.managementtask.api.services;
 
+import com.example.managementtask.api.exception.NotFoundException;
 import com.example.managementtask.api.services.interfaceService.CommentService;
 import com.example.managementtask.security.service.UserDetailsImpl;
 import com.example.managementtask.store.dtos.CommentDTO;
@@ -17,6 +18,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
+
     private final CommentRepository commentRepository;
     private final UserService userService;
     private final TaskServiceImpl taskService;
@@ -24,13 +26,11 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment createComment(CommentDTO dto, Authentication authentication) {
-        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-
         Task task = taskService.readTaskById(dto.getTaskId());
 
         Comment newComment = Comment.builder()
                 .content(dto.getContent())
-                .author(userService.readUserById(userPrincipal.getId()))
+                .author(userService.readUserById(userPrincipal(authentication).getId()))
                 .task(task)
                 .dateCreate(LocalDateTime.now())
                 .build();
@@ -51,9 +51,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment updatePartInfoComment(Long id, CommentDTO dto, Authentication authentication) {
-        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-        Comment existComment = commentRepository.findById(id).orElseThrow();
-        if(existComment.getAuthor().getId().equals(userPrincipal.getId())){
+        Comment existComment = findCommentById(id);
+        if(existComment.getAuthor().getId().equals(userPrincipal(authentication).getId())){
             existComment.setContent(dto.getContent());
         }
         return commentRepository.save(existComment);
@@ -62,7 +61,14 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void deleteComment(Long id) {
-        Comment existComment = commentRepository.findById(id).orElseThrow();
-        commentRepository.deleteById(existComment.getId());
+        commentRepository.deleteById(findCommentById(id).getId());
+    }
+
+    private Comment findCommentById(Long id){
+        return commentRepository.findById(id).orElseThrow(()-> new NotFoundException(String.format("comment with /%s/ id doesn' found",id)));
+    }
+
+    private UserDetailsImpl userPrincipal(Authentication authentication){
+        return (UserDetailsImpl) authentication.getPrincipal();
     }
 }

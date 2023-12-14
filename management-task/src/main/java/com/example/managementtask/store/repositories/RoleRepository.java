@@ -1,7 +1,7 @@
-package com.example.managementtask.security;
+package com.example.managementtask.store.repositories;
 
-import com.example.managementtask.security.user.ERole;
-import com.example.managementtask.security.user.Role;
+import com.example.managementtask.store.entities.user.ERole;
+import com.example.managementtask.store.entities.user.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

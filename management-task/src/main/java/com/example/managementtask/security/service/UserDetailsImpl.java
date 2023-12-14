@@ -1,6 +1,6 @@
 package com.example.managementtask.security.service;
 
-import com.example.managementtask.security.user.User;
+import com.example.managementtask.store.entities.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,17 +1,18 @@
 package com.example.managementtask.api.controllers;
 
 import com.example.managementtask.api.services.TaskServiceImpl;
+import com.example.managementtask.store.dtos.PageDataDTO;
 import com.example.managementtask.store.dtos.TaskDTO;
 import com.example.managementtask.store.entities.Task;
 import com.example.managementtask.store.entities.enums.Priority;
 import com.example.managementtask.store.entities.enums.Status;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -27,8 +28,11 @@ public class TaskController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Task>> readAllTask(){
-        return response.listEntity(taskService.readAllTask());
+    public ResponseEntity<PageDataDTO<Task>> readAllTask(
+            @RequestParam(required = false,defaultValue = "0") int page,
+            @RequestParam(required = false,defaultValue = "10")int size
+    ){
+        return response.listEntity(pageDataDTO(taskService.readAllTask(PageRequest.of(page,size))));
     }
 
     @GetMapping("/{id}")
@@ -37,38 +41,67 @@ public class TaskController {
     }
 
     @GetMapping("/author")
-    public ResponseEntity<List<Task>> readAllTaskByAuthor(Authentication authentication){
-        return response.listEntity(taskService.readTaskByAuthor(authentication));
+    public ResponseEntity<PageDataDTO<Task>> readAllTaskByAuthor(
+            Authentication authentication,
+            @RequestParam(required = false,defaultValue = "0") int page,
+            @RequestParam(required = false,defaultValue = "10")int size
+    ){
+        return response.listEntity(pageDataDTO(taskService.readTaskByAuthor(authentication,PageRequest.of(page,size))));
     }
 
     @GetMapping("/author/{name}")
-    public ResponseEntity<List<Task>> readAllTaskByAuthorName(@PathVariable String name){
-        return response.listEntity(taskService.readTaskByAuthorName(name));
+    public ResponseEntity<PageDataDTO<Task>> readAllTaskByAuthorName(
+            @PathVariable String name,
+            @RequestParam(required = false,defaultValue = "0") int page,
+            @RequestParam(required = false,defaultValue = "10")int size
+    ){
+        return response.listEntity(pageDataDTO(taskService.readTaskByAuthorName(name,PageRequest.of(page,size))));
     }
 
     @GetMapping("/executor")
-    public ResponseEntity<List<Task>> readAllTaskByExecutor(Authentication authentication){
-        return response.listEntity(taskService.readTaskByExecutor(authentication));
+    public ResponseEntity<PageDataDTO<Task>> readAllTaskByExecutor(
+            Authentication authentication,
+            @RequestParam(required = false,defaultValue = "0") int page,
+            @RequestParam(required = false,defaultValue = "10")int size
+    ){
+        return response.listEntity(pageDataDTO(taskService.readTaskByExecutor(authentication,PageRequest.of(page,size))));
     }
 
     @GetMapping("/executor/{name}")
-    public ResponseEntity<List<Task>> readAllTaskByExecutorName(@PathVariable String name){
-        return response.listEntity(taskService.readTaskByExecutorName(name));
+    public ResponseEntity<PageDataDTO<Task>> readAllTaskByExecutorName(
+            @PathVariable String name,
+            @RequestParam(required = false,defaultValue = "0") int page,
+            @RequestParam(required = false,defaultValue = "10")int size
+    ){
+        return response.listEntity(pageDataDTO(taskService.readTaskByExecutorName(name,PageRequest.of(page,size))));
     }
 
     @GetMapping("/priority/{priority}")
-    public ResponseEntity<List<Task>> readAllTaskByPriority(@PathVariable Priority priority){
-        return response.listEntity(taskService.readTaskByPriority(priority));
+    public ResponseEntity<PageDataDTO<Task>> readAllTaskByPriority(
+            @PathVariable Priority priority,
+            @RequestParam(required = false,defaultValue = "0") int page,
+            @RequestParam(required = false,defaultValue = "10")int size
+    ){
+        return response.listEntity(pageDataDTO(taskService.readTaskByPriority(priority,PageRequest.of(page,size))));
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<Task>> readAllTaskByStatus(@PathVariable Status status){
-        return response.listEntity(taskService.readTaskByStatus(status));
+    public ResponseEntity<PageDataDTO<Task>> readAllTaskByStatus(
+            @PathVariable Status status,
+            @RequestParam(required = false,defaultValue = "0") int page,
+            @RequestParam(required = false,defaultValue = "10")int size
+    ){
+        return response.listEntity(pageDataDTO(taskService.readTaskByStatus(status,PageRequest.of(page,size))));
     }
 
     @GetMapping("/priority_status/{priority}/{status}")
-    public ResponseEntity<List<Task>> readAllTaskByPriorityAndStatus(@PathVariable Priority priority, @PathVariable Status status){
-        return response.listEntity(taskService.readTaskByTaskAndStatus(priority,status));
+    public ResponseEntity<PageDataDTO<Task>> readAllTaskByPriorityAndStatus(
+            @PathVariable Priority priority,
+            @PathVariable Status status,
+            @RequestParam(required = false,defaultValue = "0") int page,
+            @RequestParam(required = false,defaultValue = "10")int size
+    ){
+        return response.listEntity(pageDataDTO(taskService.readTaskByTaskAndStatus(priority,status,PageRequest.of(page,size))));
     }
 
     @PatchMapping("/{id}")
@@ -80,5 +113,9 @@ public class TaskController {
     public HttpStatus deleteTask(@PathVariable Long id){
         taskService.deleteTask(id);
         return HttpStatus.OK;
+    }
+
+    private PageDataDTO<Task> pageDataDTO(Page<Task> taskPage){
+        return new PageDataDTO<>(taskPage.getContent(),taskPage.getTotalElements());
     }
 }

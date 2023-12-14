@@ -1,6 +1,6 @@
 package com.example.managementtask.store.entities;
 
-import com.example.managementtask.security.user.User;
+import com.example.managementtask.store.entities.user.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

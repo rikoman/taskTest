@@ -1,6 +1,6 @@
 package com.example.managementtask.store.entities;
 
-import com.example.managementtask.security.user.User;
+import com.example.managementtask.store.entities.user.User;
 import com.example.managementtask.store.entities.enums.Priority;
 import com.example.managementtask.store.entities.enums.Status;
 import jakarta.persistence.*;

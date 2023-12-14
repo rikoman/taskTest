@@ -1,7 +1,7 @@
 package com.example.managementtask.security.service;
 
-import com.example.managementtask.security.UserRepository;
-import com.example.managementtask.security.user.User;
+import com.example.managementtask.store.repositories.UserRepository;
+import com.example.managementtask.store.entities.user.User;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,10 +1,9 @@
 package com.example.managementtask.api.controllers;
 
+import com.example.managementtask.store.dtos.PageDataDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class MappingResponse <T>{
@@ -14,7 +13,7 @@ public class MappingResponse <T>{
         return new ResponseEntity<>(entity, HttpStatus.OK);
     }
 
-    public ResponseEntity<List<T>> listEntity(List<T> entity){
+    public ResponseEntity<PageDataDTO<T>> listEntity(PageDataDTO<T> entity){
         return new ResponseEntity<>(entity,HttpStatus.OK);
     }
 }
