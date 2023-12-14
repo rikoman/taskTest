@@ -27,6 +27,10 @@ public class CommentController {
         return commentService.createComment(dto,authentication);
     }
 
+    @PatchMapping("/{id}")
+    public Comment updatePartInfoComment(@PathVariable Long id, @RequestBody CommentDTO dto,Authentication authentication){
+        return commentService.updatePartInfoComment(id,dto,authentication);
+    }
     @DeleteMapping("/{id}")
     public HttpStatus deleteComment(@PathVariable Long id){
         commentService.deleteComment(id);
