@@ -1,5 +1,6 @@
 package com.example.managementtask.api.services;
 
+import com.example.managementtask.api.exception.BadRequestException;
 import com.example.managementtask.api.exception.NotFoundException;
 import com.example.managementtask.api.services.interfaceService.TaskService;
 import com.example.managementtask.security.service.UserDetailsImpl;
@@ -23,9 +24,8 @@ public class TaskServiceImpl implements TaskService {
     private final UserService userService;
 
     @Override
-    public Task createTask(TaskDTO task,Authentication authentication) {
+    public Task createTask(TaskDTO task, Authentication authentication) {
         User executor = task.getExecutor() !=null ? userService.readUserById(task.getExecutor()):userService.readUserById(userPrincipal(authentication).getId());
-
         Task newTask = Task.builder()
                 .title(task.getTitle())
                 .description(task.getDescription())
@@ -54,6 +54,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Page<Task> readTaskByAuthorName(String name, PageRequest pageRequest) {
+        userService.readUserByUsername(name);
         return taskRepository.findByAuthorUsername(name,pageRequest);
     }
 
@@ -64,41 +65,51 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Page<Task> readTaskByExecutorName(String name, PageRequest pageRequest) {
+        userService.readUserByUsername(name);
         return taskRepository.findByExecutorUsername(name,pageRequest);
     }
 
     @Override
-    public Page<Task> readTaskByPriority(Priority priority, PageRequest pageRequest) {
-        return taskRepository.findByPriority(priority,pageRequest);
+    public Page<Task> readTaskByPriority(String priority, PageRequest pageRequest) {
+        try{
+            Priority priorityEnum = Priority.valueOf(priority.toUpperCase());
+            return taskRepository.findByPriority(priorityEnum,pageRequest);
+        }catch (IllegalArgumentException ex) {
+            throw new BadRequestException("Неверное значение параметра priority");
+        }
     }
 
     @Override
-    public Page<Task> readTaskByStatus(Status status, PageRequest pageRequest) {
-        return taskRepository.findByStatus(status,pageRequest);
+    public Page<Task> readTaskByStatus(String status, PageRequest pageRequest) {
+       try{
+           Status statusEnum = Status.valueOf(status.toUpperCase());
+           return taskRepository.findByStatus(statusEnum,pageRequest);
+       }catch (IllegalArgumentException ex) {
+           throw new BadRequestException("Неверное значение параметра priority");
+       }
     }
 
     @Override
-    public Page<Task> readTaskByTaskAndStatus(Priority priority, Status status, PageRequest pageRequest) {
-        return taskRepository.findByPriorityAndStatus(priority,status,pageRequest);
-    }
-
-    @Override
-    public Task updatePartInfoTask(Long id, TaskDTO task,Authentication authentication) {
+    public Task updatePartInfoTask(Long id, TaskDTO dto,Authentication authentication) {
         Task existTask = readTaskById(id);
 
+        if(!existTask.getAuthor().getId().equals(userPrincipal(authentication).getId()) && !existTask.getExecutor().getId().equals(userPrincipal(authentication).getId())){
+            throw new BadRequestException("Вы не являетесь автором или исполнителем");
+        }
+
         if(existTask.getAuthor().getId().equals(userPrincipal(authentication).getId())){
-            if(task.getTitle()!= null) existTask.setTitle(task.getTitle());
-            if(task.getDescription()!=null) existTask.setDescription(task.getDescription());
-            if(task.getExecutor()!=null) existTask.setExecutor(userService.readUserById(task.getExecutor()));
-            if(task.getStatus()!=null) existTask.setStatus(task.getStatus());
-            if(task.getPriority()!=null) existTask.setPriority(task.getPriority());
+            if(dto.getTitle()!= null) existTask.setTitle(dto.getTitle());
+            if(dto.getDescription()!=null) existTask.setDescription(dto.getDescription());
+            if(dto.getExecutor()!=null) existTask.setExecutor(userService.readUserById(dto.getExecutor()));
+            if(dto.getStatus()!=null) existTask.setStatus(dto.getStatus());
+            if(dto.getPriority()!=null) existTask.setPriority(dto.getPriority());
         }
+
         if(existTask.getExecutor().getId().equals(userPrincipal(authentication).getId())){
-            if(task.getStatus()!=null) existTask.setStatus(task.getStatus());
+            if(dto.getTitle()!= null || dto.getDescription()!=null || dto.getExecutor()!=null || dto.getPriority()!=null)
+                throw new BadRequestException("Вы не можете обновить поля, кроме поля status");
         }
-//        if(!existTask.getExecutor().getId().equals(userPrincipal.getId())|| !existTask.getAuthor().getId().equals(userPrincipal.getId())){
-//            throw new RuntimeException("Вы не являетесь автором или исполнителем");
-//        }
+
         return taskRepository.save(existTask);
     }
 

@@ -15,7 +15,6 @@ public class TaskDTO {
     private String description;
     private Status status;
     private Priority priority;
-    private Long author;
     private Long executor;
     private List<Comment> comments;
 }

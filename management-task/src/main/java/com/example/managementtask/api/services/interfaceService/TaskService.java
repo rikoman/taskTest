@@ -24,11 +24,9 @@ public interface TaskService {
 
     Page<Task> readTaskByExecutorName(String name, PageRequest pageRequest);
 
-    Page<Task> readTaskByPriority(Priority priority, PageRequest pageRequest);
+    Page<Task> readTaskByPriority(String priority, PageRequest pageRequest);
 
-    Page<Task> readTaskByStatus(Status status, PageRequest pageRequest);
-
-    Page<Task> readTaskByTaskAndStatus(Priority priority, Status status, PageRequest pageRequest);
+    Page<Task> readTaskByStatus(String status, PageRequest pageRequest);
 
     Task updatePartInfoTask(Long id,TaskDTO task,Authentication authentication);
 

@@ -1,5 +1,6 @@
 package com.example.managementtask.api.services;
 
+import com.example.managementtask.api.exception.NotFoundException;
 import com.example.managementtask.store.repositories.UserRepository;
 import com.example.managementtask.store.entities.user.User;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,8 @@ public class UserService {
         return userRepository.findById(id).orElseThrow();
     }
 
-    public User readUserByUsername(String username){
-        return userRepository.findByUsername(username).orElseThrow();
+    public void readUserByUsername(String username){
+        userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException(String.format("user with /%s/ name not found", username)));
     }
 
     public List<User> readAllUserByIds(List<Long> userIds){

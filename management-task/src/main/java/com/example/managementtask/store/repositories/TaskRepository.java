@@ -6,7 +6,6 @@ import com.example.managementtask.store.entities.enums.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 public interface TaskRepository extends JpaRepository<Task,Long> {
 
@@ -21,6 +20,4 @@ public interface TaskRepository extends JpaRepository<Task,Long> {
     Page<Task> findByPriority(Priority priority,PageRequest pageRequest);
 
     Page<Task> findByStatus(Status status,PageRequest pageRequest);
-
-    Page<Task> findByPriorityAndStatus(Priority priority, Status status, PageRequest pageRequest);
 }

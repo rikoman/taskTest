@@ -4,8 +4,6 @@ import com.example.managementtask.api.services.TaskServiceImpl;
 import com.example.managementtask.store.dtos.PageDataDTO;
 import com.example.managementtask.store.dtos.TaskDTO;
 import com.example.managementtask.store.entities.Task;
-import com.example.managementtask.store.entities.enums.Priority;
-import com.example.managementtask.store.entities.enums.Status;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -78,7 +76,7 @@ public class TaskController {
 
     @GetMapping("/priority/{priority}")
     public ResponseEntity<PageDataDTO<Task>> readAllTaskByPriority(
-            @PathVariable Priority priority,
+            @PathVariable String priority,
             @RequestParam(required = false,defaultValue = "0") int page,
             @RequestParam(required = false,defaultValue = "10")int size
     ){
@@ -87,21 +85,11 @@ public class TaskController {
 
     @GetMapping("/status/{status}")
     public ResponseEntity<PageDataDTO<Task>> readAllTaskByStatus(
-            @PathVariable Status status,
+            @PathVariable String status,
             @RequestParam(required = false,defaultValue = "0") int page,
             @RequestParam(required = false,defaultValue = "10")int size
     ){
         return response.listEntity(pageDataDTO(taskService.readTaskByStatus(status,PageRequest.of(page,size))));
-    }
-
-    @GetMapping("/priority_status/{priority}/{status}")
-    public ResponseEntity<PageDataDTO<Task>> readAllTaskByPriorityAndStatus(
-            @PathVariable Priority priority,
-            @PathVariable Status status,
-            @RequestParam(required = false,defaultValue = "0") int page,
-            @RequestParam(required = false,defaultValue = "10")int size
-    ){
-        return response.listEntity(pageDataDTO(taskService.readTaskByTaskAndStatus(priority,status,PageRequest.of(page,size))));
     }
 
     @PatchMapping("/{id}")
