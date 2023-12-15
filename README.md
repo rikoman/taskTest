@@ -11,3 +11,4 @@
 
 ## Ссылки
 1. Swagger UI - http://localhost:8080/swagger-ui/index.html
+2. api docs - http://localhost:8080/v3/api-docs
