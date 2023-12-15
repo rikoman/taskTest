@@ -1,5 +1,6 @@
-package com.example.managementtask.store.entities.user;
+package com.example.managementtask.store.entities;
 
+import com.example.managementtask.store.enums.ERole;
 import jakarta.persistence.*;
 import lombok.*;
 

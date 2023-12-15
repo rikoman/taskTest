@@ -1,8 +1,8 @@
 package com.example.managementtask.store.dtos;
 
 import com.example.managementtask.store.entities.Comment;
-import com.example.managementtask.store.entities.enums.Priority;
-import com.example.managementtask.store.entities.enums.Status;
+import com.example.managementtask.store.enums.Priority;
+import com.example.managementtask.store.enums.Status;
 import lombok.Builder;
 import lombok.Data;
 

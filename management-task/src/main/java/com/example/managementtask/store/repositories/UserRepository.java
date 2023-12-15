@@ -1,6 +1,6 @@
 package com.example.managementtask.store.repositories;
 
-import com.example.managementtask.store.entities.user.User;
+import com.example.managementtask.store.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

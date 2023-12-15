@@ -4,11 +4,11 @@ import com.example.managementtask.api.exception.BadRequestException;
 import com.example.managementtask.api.exception.NotFoundException;
 import com.example.managementtask.api.services.interfaceService.TaskService;
 import com.example.managementtask.security.service.UserDetailsImpl;
-import com.example.managementtask.store.entities.user.User;
+import com.example.managementtask.store.entities.User;
 import com.example.managementtask.store.dtos.TaskDTO;
 import com.example.managementtask.store.entities.Task;
-import com.example.managementtask.store.entities.enums.Priority;
-import com.example.managementtask.store.entities.enums.Status;
+import com.example.managementtask.store.enums.Priority;
+import com.example.managementtask.store.enums.Status;
 import com.example.managementtask.store.repositories.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +26,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task createTask(TaskDTO task, Authentication authentication) {
         User executor = task.getExecutor() !=null ? userService.readUserById(task.getExecutor()):userService.readUserById(userPrincipal(authentication).getId());
+
         Task newTask = Task.builder()
                 .title(task.getTitle())
                 .description(task.getDescription())
@@ -34,6 +35,7 @@ public class TaskServiceImpl implements TaskService {
                 .author(userService.readUserById(userPrincipal(authentication).getId()))
                 .executor(executor)
                 .build();
+
         return taskRepository.save(newTask);
     }
 
@@ -74,7 +76,8 @@ public class TaskServiceImpl implements TaskService {
         try{
             Priority priorityEnum = Priority.valueOf(priority.toUpperCase());
             return taskRepository.findByPriority(priorityEnum,pageRequest);
-        }catch (IllegalArgumentException ex) {
+        }
+        catch (IllegalArgumentException ex) {
             throw new BadRequestException("Неверное значение параметра priority");
         }
     }

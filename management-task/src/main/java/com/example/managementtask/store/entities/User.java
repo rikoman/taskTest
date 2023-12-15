@@ -1,4 +1,4 @@
-package com.example.managementtask.store.entities.user;
+package com.example.managementtask.store.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;

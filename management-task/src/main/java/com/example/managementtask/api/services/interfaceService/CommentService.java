@@ -9,7 +9,10 @@ import java.util.List;
 public interface CommentService {
 
     Comment createComment(CommentDTO dto, Authentication authentication);
+
     List<Comment> readAllComment();
+
     Comment updatePartInfoComment(Long id,CommentDTO dto,Authentication authentication);
+
     void deleteComment(Long id);
 }

@@ -2,7 +2,7 @@ package com.example.managementtask.api.services;
 
 import com.example.managementtask.api.exception.NotFoundException;
 import com.example.managementtask.store.repositories.UserRepository;
-import com.example.managementtask.store.entities.user.User;
+import com.example.managementtask.store.entities.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -2,8 +2,6 @@ package com.example.managementtask.api.services.interfaceService;
 
 import com.example.managementtask.store.dtos.TaskDTO;
 import com.example.managementtask.store.entities.Task;
-import com.example.managementtask.store.entities.enums.Priority;
-import com.example.managementtask.store.entities.enums.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;

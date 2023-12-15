@@ -1,7 +1,7 @@
 package com.example.managementtask.security.config;
 
-import com.example.managementtask.store.entities.user.ERole;
-import com.example.managementtask.store.entities.user.Role;
+import com.example.managementtask.store.enums.ERole;
+import com.example.managementtask.store.entities.Role;
 import com.example.managementtask.store.repositories.RoleRepository;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;

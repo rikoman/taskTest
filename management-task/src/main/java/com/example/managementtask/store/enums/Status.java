@@ -1,4 +1,4 @@
-package com.example.managementtask.store.entities.enums;
+package com.example.managementtask.store.enums;
 
 public enum Status {
     PENDING,

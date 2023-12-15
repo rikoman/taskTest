@@ -36,5 +36,4 @@ public class CommentController {
         commentService.deleteComment(id);
         return HttpStatus.OK;
     }
-
 }

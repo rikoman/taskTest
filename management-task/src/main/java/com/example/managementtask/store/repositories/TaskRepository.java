@@ -1,8 +1,8 @@
 package com.example.managementtask.store.repositories;
 
 import com.example.managementtask.store.entities.Task;
-import com.example.managementtask.store.entities.enums.Priority;
-import com.example.managementtask.store.entities.enums.Status;
+import com.example.managementtask.store.enums.Priority;
+import com.example.managementtask.store.enums.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;

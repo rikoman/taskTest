@@ -53,9 +53,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment updatePartInfoComment(Long id, CommentDTO dto, Authentication authentication) {
         Comment existComment = findCommentById(id);
+
         if(existComment.getAuthor().getId().equals(userPrincipal(authentication).getId())){
             existComment.setContent(dto.getContent());
-        }else {
+        }
+        else {
             throw new BadRequestException("Вы не можете менять чужие комментарии");
         }
         return commentRepository.save(existComment);
